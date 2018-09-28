@@ -1,0 +1,59 @@
+{
+    "Version" : "1.0.0",
+    "TriggerFrequencyHrs" : 10,
+    "connectionInfo" : {
+        "sqlServerHost" : "",
+        "sqlServerUser" : "",
+        "sqlServerPass" : "",
+        "sqlServerPost" : "",
+        "sqlServerDatabase" : "",
+        "mongoServerHost" : "",
+        "mongoServerUser" : "",
+        "mongoServerPass" : "",
+        "mongoServerPost" : "",
+        "mongoServerDatabase" : "",
+        "mongoServerCollection" : ""
+    },
+    
+    /* Optional params
+    //
+    sql_cols OPTIONS
+        "valid_types" : ["int", "float"],  // data in this collumn parsed from mongo must be this type
+        "error_mode" : "exit/skip_insert/insert_null/rollback"  // needed when 'null' is not the desired mode
+    */
+    // each item in mapping is a record destined for a particular sql table
+    "mapping":[
+        {
+            "sql_dest" : {"schema":"Zips", "table":"Restraunts.Address"},
+            "sql_cols" : {
+                "_id" : {"mongo_path": "_id"},
+                "building" : {"mongo_path": "address.building"},
+                "coord_x" : {"mongo_path": "address.coord[0]"},
+                "coord_y" : {"mongo_path": "address.coord[1]"},
+                "street" : {"mongo_path" : "address.street"}, 
+                "zipcode" : {"mongo_path" : "address.zipcode"}
+            }
+        },
+        {
+            "sql_dest" : {"schema":"Zips", "table":"Restraunts"},
+            "sql_cols" : {
+                "_id" : {"mongo_path": "_id"},
+                "borough" : {"mongo_path": "borough"},
+                "cuisine" : {"mongo_path": "cuisine"},
+                "name" : {"mongo_path": "name"},
+                "r_id" : {"mongo_path": "restraunt_"}
+            }
+        },
+
+        // demonstrates target_type option and iterating over arrays
+        {
+            "sql_dest" : {"schema":"Zips", "table":"Restraunts.Grades"},
+            "sql_cols" : {
+                "_id" : {"mongo_path": "_id"},
+                "date" : {"mongo_path": "grades[all].date", "target_type":"date"},
+                "grade" : {"mongo_path": "grades[all].grade", "target_type":"varchar"},
+                "score" : {"mongo_path": "grades[all].score", "target_type":"int"},
+            }
+        }
+    ]
+}

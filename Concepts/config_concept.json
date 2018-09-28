@@ -1,0 +1,57 @@
+{
+    "Version" : "",
+    "TriggerFrequencyHrs" : 10,
+    "connectionInfo" : {
+        "sqlServerHost" : "",
+        "sqlServerUser" : "",
+        "sqlServerPass" : "",
+        "sqlServerPost" : "",
+        "sqlServerDatabase" : "",
+        "mongoServerHost" : "",
+        "mongoServerUser" : "",
+        "mongoServerPass" : "",
+        "mongoServerPost" : "",
+        "mongoServerCollection" : ""
+    },
+    "mapping" : {
+        "key 1" : {
+            "ValidTypes" : ["int"],
+            "errorHandling" : "null",
+            "sqlLocation" : {
+                "schema" : "",
+                "table" : "",
+                "col" : "",
+                "targetType" : "int"
+            }
+        },
+        "key 2" : {
+            "ValidTypes" : ["int"],
+            "errorHandling" : "null",
+            "sqlInsertion" : "db.table.col",
+            "targetType" : "int"
+        },
+        "key 3" : {
+            "key 3.1" : {
+                "ValidTypes" : ["int"],
+                "errorHandling" : "null",
+                "sqlInsertion" : "db.table.col",
+                "targetType" : "int"
+            },
+            "key 3.2" : {
+                "ValidTypes" : ["string"],
+                "errorHandling" : "null",
+                "sqlInsertion" : "db.table.col1",
+                "targetType" : "int"
+            }
+        },
+        "key 4" : [
+            {
+                "ValidTypes" : ["string"],
+                "index" : 0,
+                "errorHandling" : "null",
+                "sqlInsertion" : "db.table.col1",
+                "targetType" : ""
+            }
+        ]
+    }
+}

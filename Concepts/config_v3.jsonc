@@ -1,0 +1,77 @@
+{
+    "Version" : "",
+    "TriggerFrequencyHrs" : 10,
+    "connectionInfo" : {
+        "sqlServerHost" : "",
+        "sqlServerUser" : "",
+        "sqlServerPass" : "",
+        "sqlServerPost" : "",
+        "sqlServerDatabase" : "",
+        "mongoServerHost" : "",
+        "mongoServerUser" : "",
+        "mongoServerPass" : "",
+        "mongoServerPost" : "",
+        "mongoServerCollection" : ""
+    },
+    
+    // ========= This mapping is designed for porting data from =========
+    //                      Mongodb TO SQL Server
+    "mapping" : {
+        "address.building" : {
+            "dest":{"schema":"", "table":"", "col":"", "type":"date"},
+
+            // Optional params
+            "valid_types" : ["int", "float"],  // valid types for mongo data
+            "list_mode" : "wide/tall",  // only needed for lists
+            "list_format" : "", // demonstrated below.
+            "error_mode" : "exit/skip/null/rollback"  // needed when 'null' is not the desired mode
+        },
+        "address.coord" : {
+            "valid_types" : ["list"], 
+            "list_mode" : "wide",     // wide or tall
+
+            // list_mode = wide, 
+            // wide causes each index to become its own column with 
+            // the data located in the 'path' as the content at that index (this results in 1 record)
+            "list_format" : [
+                {"path":"address.coord[0]", "dest":{"schema":"", "table":"", "col":"", "type":"date"}},
+                {"path":"address.coord[1]", "dest":{"schema":"", "table":"", "col":"", "type":"string"}}
+            ]
+        },
+
+        // SO SIMPLE...
+        "cuisine" : {
+            "dest":{"schema":"", "table":"", "col":"", "type":"date"}
+        },
+        "grades" : {
+            // explicit definition of list type so the program knows what params to look for
+            // namely (list_mode, list_format or list_indexes)
+            "valid_types" : ["list"], 
+
+            // list_mode = tall, 
+            // tall will cause each 'path' in list_format to represent a column. then each item in the
+            // the list (and/or value at path) will be used to create a tuple 
+            "list_mode" : "tall",
+            
+            // i.e. this says: for each item in list, build a tuple, 
+            // (grades.date, grades.grade, grades.score)
+            // grades[all] or grades[x] could be used to denote every item in the list and 
+            // non-iterable items like _id, will be static values inserted into every tuple
+            // paths outside the current list could also be used, where null values would replace any invalid instance       
+            "list_format" : [  
+                {"path":"_id", "dest":{"schema":"", "table":"", "col":"rec_id", "type":"string"}},
+                {"path":"grades[all].date", "dest":{"schema":"", "table":"", "col":"", "type":"date"}},
+                {"path":"grades[all].grade", "dest":{"schema":"", "table":"", "col":"", "type":"string"}},
+                {"path":"grades[all].score", "dest":{"schema":"", "table":"", "col":"", "type":"int"}},
+                {"path":"address.coord[all]", "dest":{"schema":"", "table":"", "col":"", "type":"int"}}
+            ]
+
+            // the above format would result in the tuples
+            // (_id,                    , date      , grade, score, coord)
+            // (5ad116e31a80a30a43f35fa8, 2014-11-14, Z    , 38   , -73.88)
+            // (5ad116e31a80a30a43f35fa8, 2014-05-01, A    , 10   , 40.76)
+            // (5ad116e31a80a30a43f35fa8, 2013-03-01, A    , 7   , )
+            // (5ad116e31a80a30a43f35fa8, 2012-02-09, A    , 13   , )
+        }
+    }
+}

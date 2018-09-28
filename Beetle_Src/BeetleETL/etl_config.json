@@ -1,0 +1,57 @@
+{
+    "Version" : "1.0.0",
+    "TriggerFrequencyHrs" : 10,
+    "numDocsToPull" : 1000,
+    "connectionInfo" : {
+        "useWindowsAuth" : "yes",
+        "sqlServerHost" : "",
+        "sqlServerUser" : "",
+        "sqlServerPass" : "",
+        "sqlServerPort" : "",
+        "sqlServerDatabase" : "",
+        "mongoURISRV" : true,
+        "mongoServerHost" : "",
+        "mongoServerUser" : "",
+        "mongoServerPass" : "",
+        "mongoServerPort" : "",
+        "mongoDatabase" : "zips",
+        "mongoCollection" : "Restaurants"
+    },
+    "emailInfo" : {
+        "Subject" : "",
+        "From" : "",
+        "To" : ""
+    },
+    "mapping":[
+        {
+            "sql_dest" : "Sandbox1.dbo.[zips.Restaurants.Address]",
+            "sql_cols" : {
+                "id" : {"mongo_path": "_id", "target_type":"string"},
+                "building" : {"mongo_path": "address.building", "target_type":"string"},
+                "xCoord" : {"mongo_path": "address.coord[0]", "target_type":"int"},
+                "yCoord" : {"mongo_path": "address.coord[1]", "target_type":"int"},
+                "street" : {"mongo_path" : "address.street", "target_type":"string"}, 
+                "zipcode" : {"mongo_path" : "address.zipcode", "target_type":"string"}
+            }
+        },
+        {
+            "sql_dest" : "Sandbox1.dbo.[zips.Restaurants]",
+            "sql_cols" : {
+                "id" : {"mongo_path": "_id", "target_type":"string"},
+                "borough" : {"mongo_path": "borough", "target_type":"string"},
+                "cuisine" : {"mongo_path": "cuisine", "target_type":"string"},
+                "name" : {"mongo_path": "name", "target_type":"string"},
+                "restaurant_id" : {"mongo_path": "restaurant_id", "target_type":"string"}
+            }
+        },
+        {
+            "sql_dest" : "Sandbox1.dbo.[zips.Restaurants.Grades]",
+            "sql_cols" : {
+                "id" : {"mongo_path": "_id", "target_type":"string"},
+                "date" : {"mongo_path": "grades[all].date", "target_type":"date"},
+                "grade" : {"mongo_path": "grades[all].grade", "target_type":"string"},
+                "score" : {"mongo_path": "grades[all].score", "target_type":"int"}
+            }
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+{
+"mapping" : {
+    "restraunt" : {
+        "value_keys" :{
+            "building": {
+                "validTypes" : ["int"],
+                "errorHandling" : "null/skip/exit (default to null)",
+                "sqlLocation" : {
+                    "schema" : "",
+                    "table" : "",
+                    "col" : "",
+                    "targetType" : "varchar(32)"
+                }
+            },
+            "street" : {
+                "validTypes" : ["string"],
+                "sqlLocation" : {
+                    "schema" : "",
+                    "table" : "",
+                    "col" : "",
+                    "targetType" : "varchar(32)"
+                }
+            }
+        },
+        "maps" : [
+            "coord", 
+        ]
+
+    }, 
+    "coord" : {
+        "type" : "array",
+        "function" : "ind",
+        "format" : {
+            
+        },
+        "value_keys" :{
+            
+        },
+        "indexes" : [
+            {"index" :0, "sqlLoc":""}
+        ]
+    },
+    "grades" : {
+        "function" : "all",
+        "format"
+    }
+}
+}
